@@ -1,0 +1,13 @@
+web:
+    build: .
+    volumes:
+    - ".:/code"
+    ports:
+    - "8000:8000"
+    links:
+    - db:db
+db:
+    image: postgres
+    environment: 
+    - POSTGRES_PASSWORD=mysecretpassword
+    
