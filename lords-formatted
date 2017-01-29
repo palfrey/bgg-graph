@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items termsofuse="http://boardgamegeek.com/xmlapi/termsofuse">
+  <item type="boardgame" id="110327">
+    <thumbnail>//cf.geekdo-images.com/images/pic1116080_t.jpg</thumbnail>
+    <image>//cf.geekdo-images.com/images/pic1116080.jpg</image>
+    <name type="primary" sortindex="1" value="Lords of Waterdeep"/>
+    <description>Game description from the publisher:&amp;#10;&amp;#10;Waterdeep, the City of Splendors &amp;ndash; the most resplendent jewel in the Forgotten Realms, and a den of political intrigue and shady back-alley dealings. In this game, the players are powerful lords vying for control of this great city. Its treasures and resources are ripe for the taking, and that which cannot be gained through trickery and negotiation must be taken by force!&amp;#10;&amp;#10;In Lords of Waterdeep, a strategy board game for 2-5 players, you take on the role of one of the masked Lords of Waterdeep, secret rulers of the city. Through your agents, you recruit adventurers to go on quests on your behalf, earning rewards and increasing your influence over the city. Expand the city by purchasing new buildings that open up new actions on the board, and hinder &amp;ndash; or help &amp;ndash; the other lords by playing Intrigue cards to enact your carefully laid plans.&amp;#10;&amp;#10;During the course of play, you may gain points or resources through completing quests, constructing buildings, playing intrigue cards or having other players utilize the buildings you have constructed.  At the end of 8 rounds of play, the player who has accrued the most points wins the game.&amp;#10;&amp;#10;</description>
+    <yearpublished value="2012"/>
+    <minplayers value="2"/>
+    <maxplayers value="5"/>
+    <poll name="suggested_numplayers" title="User Suggested Number of Players" totalvotes="445">
+      <results numplayers="1">
+        <result value="Best" numvotes="1"/>
+        <result value="Recommended" numvotes="8"/>
+        <result value="Not Recommended" numvotes="223"/>
+      </results>
+      <results numplayers="2">
+        <result value="Best" numvotes="55"/>
+        <result value="Recommended" numvotes="240"/>
+        <result value="Not Recommended" numvotes="74"/>
+      </results>
+      <results numplayers="3">
+        <result value="Best" numvotes="222"/>
+        <result value="Recommended" numvotes="170"/>
+        <result value="Not Recommended" numvotes="5"/>
+      </results>
+      <results numplayers="4">
+        <result value="Best" numvotes="242"/>
+        <result value="Recommended" numvotes="135"/>
+        <result value="Not Recommended" numvotes="7"/>
+      </results>
+      <results numplayers="5">
+        <result value="Best" numvotes="71"/>
+        <result value="Recommended" numvotes="205"/>
+        <result value="Not Recommended" numvotes="58"/>
+      </results>
+      <results numplayers="5+">
+        <result value="Best" numvotes="2"/>
+        <result value="Recommended" numvotes="19"/>
+        <result value="Not Recommended" numvotes="163"/>
+      </results>
+    </poll>
+    <playingtime value="120"/>
+    <minplaytime value="60"/>
+    <maxplaytime value="120"/>
+    <minage value="12"/>
+    <poll name="suggested_playerage" title="User Suggested Player Age" totalvotes="100">
+      <results>
+        <result value="2" numvotes="0"/>
+        <result value="3" numvotes="0"/>
+        <result value="4" numvotes="1"/>
+        <result value="5" numvotes="0"/>
+        <result value="6" numvotes="1"/>
+        <result value="8" numvotes="19"/>
+        <result value="10" numvotes="43"/>
+        <result value="12" numvotes="31"/>
+        <result value="14" numvotes="5"/>
+        <result value="16" numvotes="0"/>
+        <result value="18" numvotes="0"/>
+        <result value="21 and up" numvotes="0"/>
+      </results>
+    </poll>
+    <poll name="language_dependence" title="Language Dependence" totalvotes="91">
+      <results>
+        <result level="1" value="No necessary in-game text" numvotes="0"/>
+        <result level="2" value="Some necessary text - easily memorized or small crib sheet" numvotes="8"/>
+        <result level="3" value="Moderate in-game text - needs crib sheet or paste ups" numvotes="66"/>
+        <result level="4" value="Extensive use of text - massive conversion needed to be playable" numvotes="17"/>
+        <result level="5" value="Unplayable in another language" numvotes="0"/>
+      </results>
+    </poll>
+    <link type="boardgamecategory" id="1029" value="City Building"/>
+    <link type="boardgamecategory" id="1010" value="Fantasy"/>
+    <link type="boardgamemechanic" id="2004" value="Set Collection"/>
+    <link type="boardgamemechanic" id="2686" value="Take That"/>
+    <link type="boardgamemechanic" id="2082" value="Worker Placement"/>
+    <link type="boardgamefamily" id="7307" value="Dungeons &amp; Dragons"/>
+    <link type="boardgamefamily" id="7757" value="From RPG books to board games"/>
+    <link type="boardgameexpansion" id="122996" value="Lords of Waterdeep: Inevitable Betrayal Promo Card"/>
+    <link type="boardgameexpansion" id="146704" value="Lords of Waterdeep: Rapid Expansion Promo Card"/>
+    <link type="boardgameexpansion" id="134342" value="Lords of Waterdeep: Scoundrels of Skullport"/>
+    <link type="boardgamedesigner" id="15913" value="Peter Lee"/>
+    <link type="boardgamedesigner" id="13261" value="Rodney Thompson"/>
+    <link type="boardgameartist" id="19626" value="Eric Belisle"/>
+    <link type="boardgameartist" id="14936" value="Steven Belledin"/>
+    <link type="boardgameartist" id="19412" value="Zoltan Boros"/>
+    <link type="boardgameartist" id="50887" value="Noah Bradley"/>
+    <link type="boardgameartist" id="15019" value="Eric Deschamps"/>
+    <link type="boardgameartist" id="14937" value="Wayne England"/>
+    <link type="boardgameartist" id="43532" value="Tony Foti"/>
+    <link type="boardgameartist" id="18780" value="Todd Harris"/>
+    <link type="boardgameartist" id="14202" value="Ralph Horsley"/>
+    <link type="boardgameartist" id="28288" value="Tyler Jacobson"/>
+    <link type="boardgameartist" id="14299" value="Ron Lemen"/>
+    <link type="boardgameartist" id="15368" value="Howard Lyon"/>
+    <link type="boardgameartist" id="14940" value="Warren Mahy"/>
+    <link type="boardgameartist" id="12065" value="Patrick McEvoy"/>
+    <link type="boardgameartist" id="47312" value="Jim Nelson"/>
+    <link type="boardgameartist" id="13976" value="William O'Connor"/>
+    <link type="boardgameartist" id="24268" value="Adam Paquette"/>
+    <link type="boardgameartist" id="15025" value="Lucio Parrillo"/>
+    <link type="boardgameartist" id="14278" value="Dave Rapoza"/>
+    <link type="boardgameartist" id="14961" value="Richard Sardinha"/>
+    <link type="boardgameartist" id="16907" value="Mike Schley"/>
+    <link type="boardgameartist" id="24846" value="Andrew Silver"/>
+    <link type="boardgameartist" id="13054" value="Anne Stokes"/>
+    <link type="boardgameartist" id="19413" value="Gábor Szikszai"/>
+    <link type="boardgameartist" id="29693" value="Matias Tapia"/>
+    <link type="boardgameartist" id="14949" value="Kevin Walker"/>
+    <link type="boardgameartist" id="11990" value="Tyler Walpole"/>
+    <link type="boardgameartist" id="15022" value="Eva Widermann"/>
+    <link type="boardgameartist" id="18461" value="Eric Williams (I)"/>
+    <link type="boardgameartist" id="1857" value="Matt Wilson"/>
+    <link type="boardgameartist" id="14691" value="Sam Wood"/>
+    <link type="boardgameartist" id="16453" value="Ben Wootten"/>
+    <link type="boardgameartist" id="14955" value="James Zhang"/>
+    <link type="boardgamepublisher" id="13" value="Wizards of the Coast"/>
+  </item>
+</items>

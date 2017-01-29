@@ -1,0 +1,12 @@
+[package]
+name = "bgg-graph"
+version = "0.1.0"
+authors = ["Tom Parker <palfrey@tevp.net>"]
+build = "build.rs"
+
+[build-dependencies]
+serde_codegen = "<0.9"
+
+[dependencies]
+serde_xml = "0.9.1"
+serde = "<0.9"
