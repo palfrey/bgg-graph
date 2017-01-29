@@ -18,5 +18,6 @@ from django.contrib import admin
 from graph import views
 
 urlpatterns = [
+    url(r'^user/(?P<name>[a-z0-9A-Z]+)/$', views.user),
     url(r'^admin/', admin.site.urls),
 ]
