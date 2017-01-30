@@ -15,7 +15,8 @@ def user(request, name):
     else:
         xml = users[0].xml
     root = ET.fromstring(xml)
-    items = []
+    items = {}
+    question_index = {}
     for item in root.findall("item"):
         validitem = True
         for child in item:
@@ -34,6 +35,20 @@ def user(request, name):
             xml = info.text
         else:
             xml = games[0].xml
-        gameroot = ET.fromstring(xml.encode('utf-8'))
-    return HttpResponse(pprint.pformat(sorted(items)))
+        gameroot = ET.fromstring(xml.encode('utf-8'))[0]
+        name = game
+        for nametag in gameroot.findall("name"):
+            if nametag.get("type") == "primary":
+                name = nametag.get("value")
+                break
+        questions = []
+        for linktag in gameroot.findall("link"):
+            if linktag.get("type") == "boardgamemechanic":
+                text = "%s?" % linktag.get("value")
+                if text not in question_index:
+                    question_index[text] = {"options":["Yes", "No"], "games": [], "default": "No"}
+                question_index[text]["games"].append(game)
+                questions.append({"text": text, "answer":"Yes"})
+        items[name] = questions
+    return HttpResponse("<pre>" + pprint.pformat(question_index) + "<br />" + pprint.pformat(items))
 
