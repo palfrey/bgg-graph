@@ -5,6 +5,7 @@ from models import *
 import xml.etree.ElementTree as ET
 import pprint
 import itertools
+from types import ListType
 
 def fill_tree(question_index, games):
     games = set([x["id"] for x in games.values()])
@@ -54,6 +55,34 @@ def build_tree(question_index, items):
         tree["options"][k] = build_tree(nq, {k: v for k, v in items.iteritems() if v["id"] not in removed_games})
     return tree
 
+def flatten_name(name):
+    if name[0].isdigit():
+        name = "_" + name
+    return name \
+        .replace(" ", "_") \
+        .replace("?", "") \
+        .replace(":", "") \
+        .replace("/", "") \
+        .replace("-", "_") \
+        .replace("&", "and") \
+        .replace("'", "") \
+        .replace("!", "") \
+        .replace(".","") \
+        .lower()
+
+def digraph(tree):
+    if type(tree) == ListType:
+        flat_question = flatten_name(" ".join(tree))
+        result = "\t%s [label=\"%s\"]\n" % (flat_question, ", ".join(tree))
+    else:
+        flat_question = flatten_name(tree["question"]).lower()
+        result = "\t%s [label=\"%s\"]\n" % (flat_question, tree["question"])
+        for k in tree["options"]:
+            (subnode, res) = digraph(tree["options"][k])
+            result += "\t%s -> %s [label=\"%s\"]\n" %(flat_question, subnode, k)
+            result += res
+    return (flat_question, result)
+
 def user(request, name):
     users = User.objects.filter(name=name)
     if not users.exists():
@@ -101,7 +130,6 @@ def user(request, name):
         items[name] = {"id": game, "answers": questions}
     fill_tree(question_index, items)
     tree = build_tree(question_index, items)
-    raise Exception, tree
-    most_asked = best_question(question_index, items)
-    return HttpResponse("<pre>" + pprint.pformat(question_index) + "<br />" + pprint.pformat(items))
+    (_, output) = digraph(tree)
+    return render(request, "graph.html", {"output": output.replace("\n", "\\\n").replace("\"", "\\\"").replace("\'", "\\\'")})
 
