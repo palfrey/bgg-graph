@@ -73,9 +73,12 @@ def flatten_name(name):
 def digraph(tree):
     if type(tree) == ListType:
         flat_question = flatten_name(" ".join(tree))
+    else:
+        flat_question = flatten_name(tree["question"])
+    flat_question = "%s_%d" %(flat_question, id(tree))
+    if type(tree) == ListType:
         result = "\t%s [label=\"%s\"]\n" % (flat_question, ", ".join(tree))
     else:
-        flat_question = flatten_name(tree["question"]).lower()
         result = "\t%s [label=\"%s\"]\n" % (flat_question, tree["question"])
         for k in tree["options"]:
             (subnode, res) = digraph(tree["options"][k])
