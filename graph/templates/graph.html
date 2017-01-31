@@ -7,10 +7,10 @@
   </head>
   <body>
     
-    <script src="{% static "viz-lite.js" %}"></script>
+    <script src="{% static "viz.js" %}"></script>
     <script>
     
-    document.body.innerHTML += Viz("digraph { {{ output|safe }} }");
+    document.body.innerHTML += Viz("digraph { graph[rankdir=LR, center=true, margin=0.1, nodesep=0.1, ranksep=0.1, ratio = \"compress\"]\n{{ output|safe }} }", { engine: "dot" });
     
     </script>
     

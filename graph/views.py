@@ -67,6 +67,7 @@ def flatten_name(name):
         .replace("&", "and") \
         .replace("'", "") \
         .replace("!", "") \
+        .replace(",", "") \
         .replace(".","") \
         .lower()
 
@@ -77,7 +78,7 @@ def digraph(tree):
         flat_question = flatten_name(tree["question"])
     flat_question = "%s_%d" %(flat_question, id(tree))
     if type(tree) == ListType:
-        result = "\t%s [label=\"%s\"]\n" % (flat_question, ", ".join(tree))
+        result = "\t%s [label=\"%s\", shape=box]\n" % (flat_question, ",\\n".join(sorted(tree)))
     else:
         result = "\t%s [label=\"%s\"]\n" % (flat_question, tree["question"])
         for k in tree["options"]:
