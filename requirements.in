@@ -1,5 +1,11 @@
 django
 psycopg2
 requests
+celery
+kombu
+
+# needed by start-celery-for-dev.py
+watchdog
+psutil
 
 pip-tools

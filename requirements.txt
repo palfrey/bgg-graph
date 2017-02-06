@@ -4,10 +4,21 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+amqp==2.1.4               # via kombu
+argh==0.26.2              # via watchdog
+billiard==3.5.0.2         # via celery
+celery==4.0.2
 click==6.7                # via pip-tools
 django==1.10.5
 first==2.0.1              # via pip-tools
+kombu==4.0.2
+pathtools==0.1.2          # via watchdog
 pip-tools==1.8.0
+psutil==5.1.2
 psycopg2==2.6.2
+pytz==2016.10             # via celery
+PyYAML==3.12              # via watchdog
 requests==2.13.0
 six==1.10.0               # via pip-tools
+vine==1.1.3               # via amqp
+watchdog==0.8.3

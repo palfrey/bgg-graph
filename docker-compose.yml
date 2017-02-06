@@ -5,7 +5,24 @@ web:
     ports:
     - "8000:8000"
     links:
-    - db:db
+    - db
+    - rabbitmq
+celery:
+    build: .
+    volumes:
+    - ".:/code"
+    links:
+    - db
+    - rabbitmq:rabbit
+    command: python start-celery-for-dev.py
+rabbitmq:
+    image: rabbitmq:3.6.6-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"  # we forward this port because it's useful for debugging
+      - "15672:15672"  # here, we can access rabbitmq management plugin
 db:
     image: postgres
     environment: 
