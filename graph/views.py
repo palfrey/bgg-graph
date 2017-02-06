@@ -56,6 +56,8 @@ def build_tree(question_index, items):
     return tree
 
 def flatten_name(name):
+    if name == '':
+        return ''
     if name[0].isdigit():
         name = "_" + name
     return name \
@@ -96,7 +98,7 @@ def user(request, name):
         xml = info.text
     else:
         xml = users[0].xml
-    root = ET.fromstring(xml)
+    root = ET.fromstring(xml.encode('utf-8'))
     items = {}
     question_index = {}
     for item in root.findall("item"):
