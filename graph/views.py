@@ -137,5 +137,8 @@ def user(request, name):
     fill_tree(question_index, items)
     tree = build_tree(question_index, items)
     (_, output) = digraph(tree)
-    return render(request, "graph.html", {"output": output.replace("\n", "\\\n").replace("\"", "\\\"").replace("\'", "\\\'")})
+    return render(request, "graph.html", {
+        "output": output.replace("\n", "\\\n").replace("\"", "\\\"").replace("\'", "\\\'"),
+        "user": name
+        })
 
