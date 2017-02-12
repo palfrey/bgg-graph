@@ -3,6 +3,7 @@ import requests
 from django.http import HttpResponse
 from models import *
 from tasks import update_user
+from celery import app
 
 def escape(name):
     return name.replace("\"", "\\\\\\\"")
@@ -20,13 +21,20 @@ def digraph(tree):
 
 def user(request, name):
     users = User.objects.filter(name=name)
-    if not users.exists() or users.first().root_node == None:
-        update_user.delay(name)
+    if not users.exists():
+        task = update_user.delay(name)
+        User.objects.get_or_update(name=name, processing_task=task.id)
         raise Exception
-    else:
-        user = users.first()
-        output = digraph(user.root_node)
-        return render(request, "graph.html", {
-            "output": output,
-            "user": name
-            })
+    user = users.first()
+    if user.root_node == None:
+        if user.processing_task is not None:
+            raise Exception, user.processing_task
+        task = update_user.delay(name)
+        user.processing_task = task.id
+        user.save()
+        raise Exception, user.processing_task
+    output = digraph(user.root_node)
+    return render(request, "graph.html", {
+        "output": output,
+        "user": name
+        })

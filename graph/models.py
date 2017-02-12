@@ -5,6 +5,7 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(primary_key=True, max_length=200)
     xml = models.TextField()
+    processing_task = models.UUIDField(null=True)
     root_node = models.ForeignKey('TreeNode', null=True)
 
 class Game(models.Model):
