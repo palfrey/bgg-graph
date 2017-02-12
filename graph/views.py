@@ -22,8 +22,10 @@ def digraph(tree):
 def user(request, name):
     users = User.objects.filter(name=name)
     if not users.exists():
+        user = User.objects.create(name=name)
         task = update_user.delay(name)
-        User.objects.get_or_update(name=name, processing_task=task.id)
+        user.processing_task=task.id
+        user.save()
         raise Exception
     user = users.first()
     if user.root_node == None:

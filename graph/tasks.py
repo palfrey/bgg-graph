@@ -97,19 +97,24 @@ def digraph(tree):
 def update_user(self, name):
     users = User.objects.filter(name=name)
     if not users.exists():
+        user = User.objects.create(name=name)
+    else:
+        user = users.first()
+    if user.xml == "":
         logger.info("Get user %s", name)
         url = "https://www.boardgamegeek.com/xmlapi2/collection?username=%s&subtype=boardgame&excludessubtype=boardgameexpansion" % name
         info = requests.get(url)
-        user = User.objects.create(name=name, xml=info.text)
+        info.raise_for_status()
+        user.xml=info.text
+        user.save()
         xml = info.text
     else:
-        user = users[0]
         xml = user.xml
     root = ET.fromstring(xml.encode('utf-8'))
     items = {}
     question_index = {}
-    for msg in root.findall("message"):
-        raise Exception, msg
+    if root.tag == "message":
+        raise Exception, root
     for item in root.findall("item"):
         validitem = True
         for child in item:
