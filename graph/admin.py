@@ -7,4 +7,8 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ('id',)
+    list_display = ('id','name')
+
+@admin.register(TreeNode)
+class TreeNodeAdmin(admin.ModelAdmin):
+    list_display = ('name',)

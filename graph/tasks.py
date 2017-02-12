@@ -1,9 +1,13 @@
 from celery import app
-from models import User, Game
+from models import User, Game, TreeNode, QuestionLink
 import xml.etree.ElementTree as ET
 import pprint
 import itertools
 from types import ListType
+import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 def fill_tree(question_index, games):
     games = set([x["id"] for x in games.values()])
@@ -73,33 +77,39 @@ def flatten_name(name):
 
 def digraph(tree):
     if type(tree) == ListType:
-        flat_question = flatten_name(" ".join(tree))
+        flat_question = flatten_name(" ".join([str(x) for x in tree]))
     else:
         flat_question = flatten_name(tree["question"])
-    flat_question = "%s_%d" %(flat_question, id(tree))
+    flat_question = ("%s_%d" %(flat_question, id(tree)))[:200]
     if type(tree) == ListType:
-        result = "\t%s [label=\"%s\", shape=box]\n" % (flat_question, ",\\n".join(sorted(tree)))
+        node, _ = TreeNode.objects.get_or_create(name=flat_question, game_node=True)
+        for x in tree:
+            node.games.add(Game.objects.get(id=x))
+        node.save()
     else:
-        result = "\t%s [label=\"%s\"]\n" % (flat_question, tree["question"])
+        node, _ = TreeNode.objects.get_or_create(name=flat_question, description=tree["question"], game_node=False)
         for k in tree["options"]:
-            (subnode, res) = digraph(tree["options"][k])
-            result += "\t%s -> %s [label=\"%s\"]\n" %(flat_question, subnode, k)
-            result += res
-    return (flat_question, result)
+            subnode = digraph(tree["options"][k])
+            QuestionLink.objects.get_or_create(from_node=node, to_node=subnode, label=k)
+    return node
 
 @app.task(bind=True)
 def update_user(self, name):
     users = User.objects.filter(name=name)
     if not users.exists():
+        logger.info("Get user %s", name)
         url = "https://www.boardgamegeek.com/xmlapi2/collection?username=%s&subtype=boardgame&excludessubtype=boardgameexpansion" % name
         info = requests.get(url)
-        User.objects.create(name=name, xml=info.text)
+        user = User.objects.create(name=name, xml=info.text)
         xml = info.text
     else:
-        xml = users[0].xml
+        user = users[0]
+        xml = user.xml
     root = ET.fromstring(xml.encode('utf-8'))
     items = {}
     question_index = {}
+    for msg in root.findall("message"):
+        raise Exception, msg
     for item in root.findall("item"):
         validitem = True
         for child in item:
@@ -112,18 +122,18 @@ def update_user(self, name):
         game = int(item.get("objectid"))
         games = Game.objects.filter(id=game)
         if not games.exists():
+            logger.info("Get game %s", game)
             url = "https://www.boardgamegeek.com/xmlapi2/thing?id=%d" % game
             info = requests.get(url)
-            Game.objects.create(id=game, xml=info.text)
-            xml = info.text
+            gameroot = ET.fromstring(info.text.encode('utf-8'))[0]
+            name = game
+            for nametag in gameroot.findall("name"):
+                if nametag.get("type") == "primary":
+                    name = nametag.get("value")
+                    break
+            Game.objects.create(id=game, xml=info.text, name=name)
         else:
-            xml = games[0].xml
-        gameroot = ET.fromstring(xml.encode('utf-8'))[0]
-        name = game
-        for nametag in gameroot.findall("name"):
-            if nametag.get("type") == "primary":
-                name = nametag.get("value")
-                break
+            gameroot = ET.fromstring(games[0].xml.encode('utf-8'))[0]
         questions = []
         for linktag in gameroot.findall("link"):
             if linktag.get("type") == "boardgamemechanic":
@@ -132,8 +142,9 @@ def update_user(self, name):
                     question_index[text] = {"options":{"Yes":[], "No":[]}, "default": "No"}
                 question_index[text]["options"]["Yes"].append(game)
                 questions.append({"text": text, "answer":"Yes"})
-        items[name] = {"id": game, "answers": questions}
+        items[game] = {"id": game, "answers": questions}
     fill_tree(question_index, items)
     tree = build_tree(question_index, items)
-    (_, output) = digraph(tree)
-    raise Exception, output
+    output = digraph(tree)
+    user.root_node = output
+    user.save()
