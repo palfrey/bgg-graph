@@ -7,6 +7,7 @@
   </head>
   <body>
     <script src="{% static "viz.js" %}"></script>
+    <script src="{% static "svg-pan-zoom.min.js" %}"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
     <script>
     $(function() {
@@ -14,8 +15,9 @@
       graph[rankdir=LR, center=true, margin=0.1, nodesep=0.1, ranksep=0.1, ratio = \"compress\"] \
       {{ output|safe }}\
       }", { engine: "dot" });
-      $('svg').attr('width', '100%');
-      $('svg').removeAttr('height');
+      svgPanZoom('svg', {
+        minZoom: 0.01
+      });
     });
     </script>
     
