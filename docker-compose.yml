@@ -6,7 +6,7 @@ web:
     - "8000:8000"
     links:
     - db
-    - rabbitmq
+    - rabbitmq:rabbit
 celery:
     build: .
     volumes:
@@ -14,7 +14,7 @@ celery:
     links:
     - db
     - rabbitmq:rabbit
-    command: python start-celery-for-dev.py
+    command: celery -A graph worker -l INFO --pidfile /var/run/celery-worker.pid
 rabbitmq:
     image: rabbitmq:3.6.6-management-alpine
     environment:
