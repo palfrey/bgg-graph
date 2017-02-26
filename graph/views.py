@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from models import *
 from tasks import update_user
 from celery import app
@@ -43,6 +43,17 @@ def user(request, name):
         "output": output,
         "user": name
         })
+
+def user_refresh(request, name):
+    users = User.objects.filter(name=name)
+    if not users.exists():
+        return HttpResponseNotFound()
+    user = users.first()
+    user.xml = ""
+    task = update_user.delay(name)
+    user.processing_task = task.id
+    user.save()
+    return JsonResponse({"message:":"refreshing..."})
 
 def lookup(request):
     return redirect("/user/%s" % request.POST["username"])

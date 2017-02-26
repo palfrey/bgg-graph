@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Graph for {{ user }}{% endblock %}
-{% block content %}
+{% block script %}
 <script src="{% static "viz.js" %}"></script>
 <script src="{% static "svg-pan-zoom.min.js" %}"></script>
 <script>
@@ -15,4 +15,6 @@ $(function() {
   });
 });
 </script>
+{% endblock %}
+{% block content %}
 {% endblock %}

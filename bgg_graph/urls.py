@@ -18,6 +18,7 @@ from django.contrib import admin
 from graph import views
 
 urlpatterns = [
+    url(r'^user/(?P<name>.+)/refresh$', views.user_refresh),
     url(r'^user/(?P<name>.+)/$', views.user),
     url(r'^pending/(?P<name>.+)/$', views.pending),
     url(r'^status/(?P<name>.+)/$', views.status),

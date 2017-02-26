@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Graph pending for {{user}}{% endblock %}
 {% block content %}
 <div class="container-fluid">
@@ -16,7 +17,7 @@
             var root = $(xml).find(":root");
             if (root.length == 0) {
                 $('#status').html("Getting user...");
-                setTimeout(refreshUserStatus, 2000);
+                setTimeout(refreshUserStatus, 5000);
                 return;
             }
             var nodeName = root[0].nodeName;
@@ -32,7 +33,8 @@
                     var msg = $(xml).find("message")[0];
                     if ($.trim(msg.innerHTML) == "Your request for this collection has been accepted and will be processed.  Please try again later for access.") {
                         $('#status').html("Graph being processed...");
-                        setTimeout(refreshUserStatus, 2000);
+                        $.post("/user/{{user}}/refresh");
+                        setTimeout(refreshUserStatus, 5000);
                     }
                     break;
                 default:
