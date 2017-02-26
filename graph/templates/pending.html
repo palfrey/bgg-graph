@@ -32,10 +32,13 @@
                 case "message":
                     var msg = $(xml).find("message")[0];
                     if ($.trim(msg.innerHTML) == "Your request for this collection has been accepted and will be processed.  Please try again later for access.") {
-                        $('#status').html("Graph being processed...");
-                        $.post("/user/{{user}}/refresh");
-                        setTimeout(refreshUserStatus, 5000);
+                        $('#status').html("Graph being processed by BGG...");
                     }
+                    else {
+                        $('#status').html(msg);
+                    }
+                    $.post("/user/{{user}}/refresh");
+                    setTimeout(refreshUserStatus, 5000);
                     break;
                 default:
                     console.log(nodeName);

@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from models import *
 from tasks import update_user
 from celery import app
+import xml.etree.ElementTree as ET
 
 def escape(name):
     return name.replace("\"", "\\\\\\\"")
@@ -65,4 +66,7 @@ def pending(request, name):
 
 def status(request, name):
     user = User.objects.get(name=name)
-    return HttpResponse(user.xml, content_type="application/xml")
+    if user.processing_task != None: # might have items, but should tell user still processing
+        return HttpResponse("<message>Loading all the games for user...</message>", content_type="application/xml")
+    else:
+        return HttpResponse(user.xml, content_type="application/xml")
