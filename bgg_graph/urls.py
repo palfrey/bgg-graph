@@ -18,6 +18,10 @@ from django.contrib import admin
 from graph import views
 
 urlpatterns = [
-    url(r'^user/(?P<name>[a-z0-9A-Z]+)/$', views.user),
+    url(r'^user/(?P<name>.+)/$', views.user),
+    url(r'^pending/(?P<name>.+)/$', views.pending),
+    url(r'^status/(?P<name>.+)/$', views.status),
+    url(r'^lookup/', views.lookup),
     url(r'^admin/', admin.site.urls),
+    url(r'^$', views.index)
 ]

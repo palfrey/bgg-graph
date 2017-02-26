@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 from django.http import HttpResponse
 from models import *
@@ -19,6 +19,9 @@ def digraph(tree):
             result += res
     return result
 
+def index(request):
+    return render(request, "index.html")
+
 def user(request, name):
     users = User.objects.filter(name=name)
     if not users.exists():
@@ -26,17 +29,29 @@ def user(request, name):
         task = update_user.delay(name)
         user.processing_task=task.id
         user.save()
-        raise Exception
+        return redirect("/pending/%s" % name)
     user = users.first()
     if user.root_node == None:
         if user.processing_task is not None:
-            raise Exception, user.processing_task
+            return redirect("/pending/%s" % name)
         task = update_user.delay(name)
         user.processing_task = task.id
         user.save()
-        raise Exception, user.processing_task
+        return redirect("/pending/%s" % name)
     output = digraph(user.root_node)
     return render(request, "graph.html", {
         "output": output,
         "user": name
         })
+
+def lookup(request):
+    return redirect("/user/%s" % request.POST["username"])
+
+def pending(request, name):
+    return render(request, "pending.html", {
+        "user": name
+        })
+
+def status(request, name):
+    user = User.objects.get(name=name)
+    return HttpResponse(user.xml, content_type="application/xml")

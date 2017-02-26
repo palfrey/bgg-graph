@@ -113,8 +113,10 @@ def update_user(self, name):
     root = ET.fromstring(xml.encode('utf-8'))
     items = {}
     question_index = {}
-    if root.tag == "message":
-        raise Exception, root
+    if root.tag in ["errors", "message"]:
+        user.processing_task = None
+        user.save()
+        return
     for item in root.findall("item"):
         validitem = True
         for child in item:
@@ -152,4 +154,5 @@ def update_user(self, name):
     tree = build_tree(question_index, items)
     output = digraph(tree)
     user.root_node = output
+    user.processing_task = None
     user.save()

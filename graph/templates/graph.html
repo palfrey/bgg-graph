@@ -1,25 +1,18 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Graph for {{ user }}</title>
-  </head>
-  <body>
-    <script src="{% static "viz.js" %}"></script>
-    <script src="{% static "svg-pan-zoom.min.js" %}"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-    <script>
-    $(function() {
-      document.body.innerHTML += Viz("digraph { \
-      graph[rankdir=LR, center=true, margin=0.1, nodesep=0.1, ranksep=0.1, ratio = \"compress\"] \
-      {{ output|safe }}\
-      }", { engine: "dot" });
-      svgPanZoom('svg', {
-        minZoom: 0.01
-      });
-    });
-    </script>
-    
-  </body>
-</html>
+{% block title %}Graph for {{ user }}{% endblock %}
+{% block content %}
+<script src="{% static "viz.js" %}"></script>
+<script src="{% static "svg-pan-zoom.min.js" %}"></script>
+<script>
+$(function() {
+  document.body.innerHTML += Viz("digraph { \
+  graph[rankdir=LR, center=true, margin=0.1, nodesep=0.1, ranksep=0.1, ratio = \"compress\"] \
+  {{ output|safe }}\
+  }", { engine: "dot" });
+  svgPanZoom('svg', {
+    minZoom: 0.01
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Graph pending for {{user}}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1>Loading graph for {{user}}</h1>
+    <div id="status">Pending...</div>
+    <a href="/">Back to user selection</a>
+    <script>
+    function getXmlAsString(xmlDom){
+      return (typeof XMLSerializer!=="undefined") ?
+           (new window.XMLSerializer()).serializeToString(xmlDom) :
+           xmlDom.xml;
+    }
+    function refreshUserStatus() {
+        $.get("/status/{{user}}/", function( xml ) {
+            var root = $(xml).find(":root");
+            if (root.length == 0) {
+                $('#status').html("Getting user...");
+                setTimeout(refreshUserStatus, 2000);
+                return;
+            }
+            var nodeName = root[0].nodeName;
+            switch(nodeName) {
+                case "errors":
+                    var msg = $(xml).find("message")[0];
+                    $('#status').html(msg.innerHTML);
+                    break;
+                case "items":
+                    window.location.replace("/user/{{user}}");
+                    break;
+                case "message":
+                    var msg = $(xml).find("message")[0];
+                    if ($.trim(msg.innerHTML) == "Your request for this collection has been accepted and will be processed.  Please try again later for access.") {
+                        $('#status').html("Graph being processed...");
+                        setTimeout(refreshUserStatus, 2000);
+                    }
+                    break;
+                default:
+                    console.log(nodeName);
+                    $('#status').html(getXmlAsString(xml));
+            }
+        }).fail(function() {
+            console.log("error");
+        });
+    }
+    $(function() {
+        refreshUserStatus();
+    });
+    </script>
+</div>
+{% endblock %}
