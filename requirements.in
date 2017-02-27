@@ -7,5 +7,6 @@ dj-database-url
 
 # Needed by Heroku Procfile
 gunicorn
+whitenoise
 
 pip-tools
