@@ -4,6 +4,8 @@ web:
     - ".:/code"
     ports:
     - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://postgres:mysecretpassword@db/postgres
     links:
     - db
     - rabbitmq:rabbit

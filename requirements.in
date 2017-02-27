@@ -3,9 +3,9 @@ psycopg2
 requests
 celery
 kombu
+dj-database-url
 
-# needed by start-celery-for-dev.py
-watchdog
-psutil
+# Needed by Heroku Procfile
+gunicorn
 
 pip-tools
