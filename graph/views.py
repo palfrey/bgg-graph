@@ -99,7 +99,10 @@ def user_refresh(request, name):
     return JsonResponse({"message:":"refreshing..."})
 
 def lookup(request):
-    return redirect("/user/%s" % request.POST["username"])
+    if request.POST["username"] == "":
+        return redirect("/")
+    else:
+        return redirect("/user/%s" % request.POST["username"])
 
 def pending(request, name):
     return render(request, "pending.html", {
