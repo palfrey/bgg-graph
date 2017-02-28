@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Questions for {{ user }}{% endblock %}
+{% block content %}
+<h2>Games for {{ user }}</h2>
+You should play:
+{% for game in rest %}
+    <a href="https://boardgamegeek.com/boardgame/{{game.id}}">{{game.name}}</a> or 
+{% endfor %}
+<a href="https://boardgamegeek.com/boardgame/{{last.id}}">{{last.name}}</a> 
+{% endblock %}

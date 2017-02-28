@@ -5,6 +5,7 @@ from models import *
 from tasks import update_user
 from celery import app
 import xml.etree.ElementTree as ET
+import urllib
 
 def escape(name):
     return name.replace("\"", "\\\\\\\"")
@@ -39,6 +40,40 @@ def user(request, name):
         user.processing_task = task.id
         user.save()
         return redirect("/pending/%s" % name)
+    question = user.root_node
+    existing = {}
+    while True:
+        if question.description in request.GET:
+            existing[question.description] = request.GET[question.description]
+            question = QuestionLink.objects.filter(from_node=question, label=existing[question.description]).first().to_node
+        else:
+            break
+    if question.game_node:
+        all_games = list(question.games.all())
+        last_game = all_games[-1]
+        return render(request, "games.html", {
+            "rest": all_games[:-1],
+            "last": all_games[-1]
+        })
+    answers = {}
+    questions = QuestionLink.objects.filter(from_node=question)
+    for answer in questions.all():
+        answers[answer.label] = existing.copy()
+        answers[answer.label][question.description] = answer.label
+        answers[answer.label] = "&".join(["%s=%s"%(urllib.quote(key),value) for (key,value) in answers[answer.label].items()])
+    return render(request, "question.html", {
+        "question": question.description,
+        "user": name,
+        "answers": answers
+        })
+
+def graph(request, name):
+    users = User.objects.filter(name=name)
+    if not users.exists():
+        return redirect("/user/%s" % name)
+    user = users.first()
+    if user.root_node == None:
+        return redirect("/user/%s" % name)
     output = digraph(user.root_node)
     return render(request, "graph.html", {
         "output": output,
