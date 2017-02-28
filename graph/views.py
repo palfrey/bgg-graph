@@ -50,8 +50,13 @@ def user(request, name):
             break
     if question.game_node:
         all_games = list(question.games.all())
+        if len(all_games) == 0:
+            return render(request, "nogames.html", {
+                "user": name
+            })
         last_game = all_games[-1]
         return render(request, "games.html", {
+            "user": name,
             "rest": all_games[:-1],
             "last": all_games[-1],
             "existing": existing

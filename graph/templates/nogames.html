@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Games for {{ user }}{% endblock %}
+{% block content %}
+<h2>Games for {{ user }}</h2>
+Can't find any games for <a href="https://boardgamegeek.com/collection/user/{{user}}?own=1&subtype=boardgame&ff=1">{{user}}</a>
+<hr />
+<a href="/">Back to user selection</a><br />
+{% endblock %}
