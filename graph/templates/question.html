@@ -6,6 +6,15 @@ Would you like {{question}}
 {% for answer, query in answers.items %}
     <a href="/user/{{user}}?{{query}}">{{answer}}</a>
 {% endfor %}
+{% if existing|length > 0 %}
+    <hr />
+    Already answered:
+    <ul>
+    {% for question, answer in existing.items %}
+        <li>{{question}} {{answer}}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
 <hr />
 <a href="/user/{{user}}">Go back to beginning of questions</a><br />
 <a href="/graph/{{user}}">Show entire tree for {{user}}</a><br />

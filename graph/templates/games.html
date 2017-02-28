@@ -7,6 +7,15 @@ You should play:
     <a href="https://boardgamegeek.com/boardgame/{{game.id}}">{{game.name}}</a> or 
 {% endfor %}
 <a href="https://boardgamegeek.com/boardgame/{{last.id}}">{{last.name}}</a> 
+{% if existing|length > 0 %}
+    <hr />
+    Answers:
+    <ul>
+    {% for question, answer in existing.items %}
+        <li>{{question}} {{answer}}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
 <hr />
 <a href="/user/{{user}}">Go back to beginning of questions</a><br />
 <a href="/graph/{{user}}">Show entire tree for {{user}}</a><br />

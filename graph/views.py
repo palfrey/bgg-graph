@@ -53,7 +53,8 @@ def user(request, name):
         last_game = all_games[-1]
         return render(request, "games.html", {
             "rest": all_games[:-1],
-            "last": all_games[-1]
+            "last": all_games[-1],
+            "existing": existing
         })
     answers = {}
     questions = QuestionLink.objects.filter(from_node=question)
@@ -62,6 +63,7 @@ def user(request, name):
         answers[answer.label][question.description] = answer.label
         answers[answer.label] = "&".join(["%s=%s"%(urllib.quote(key),value) for (key,value) in answers[answer.label].items()])
     return render(request, "question.html", {
+        "existing": existing,
         "question": question.description,
         "user": name,
         "answers": answers
