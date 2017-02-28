@@ -6,4 +6,8 @@ Would you like {{question}}
 {% for answer, query in answers.items %}
     <a href="/user/{{user}}?{{query}}">{{answer}}</a>
 {% endfor %}
+<hr />
+<a href="/user/{{user}}">Go back to beginning of questions</a><br />
+<a href="/graph/{{user}}">Show entire tree for {{user}}</a><br />
+<a href="/">Back to user selection</a><br />
 {% endblock %}
