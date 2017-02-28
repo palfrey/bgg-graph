@@ -4,12 +4,12 @@
 <div class="jumbotron">
   <div class="container">
     <h1 class="display-3">BoardGameGeek Graph</h1>
-    <p>This is a tool for making a flowchart for what of your games you should play today</p>
+    <p>This is a tool for making a flowchart for what of your games you should play today using the data from <a href="https://boardgamegeek.com/">BoardGameGeek</a></p>
     <p>
       <form method="POST" action="/lookup/">
         {% csrf_token %} 
         BGG username <input type="text" name="username" placeholder="BGG username" />
-        <input type="submit" value="Display flowchart" />
+        <input type="submit" value="Get flowchart" />
       </form>
     </p>
   </div>
