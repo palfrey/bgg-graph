@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Questions for {{ user }}{% endblock %}
 {% block content %}
-<h2>Questions for {{ user }}</h2>
+<h2>Questions for <a href="https://boardgamegeek.com/user/{{user}}">{{user}}</a></h2>
 Would you like {{question}}
 {% for answer, query in answers.items %}
     <a href="/user/{{user}}?{{query}}">{{answer}}</a>

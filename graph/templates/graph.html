@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Graph for {{ user }}{% endblock %}
-
 {% block script %}
+<h2>Graph for <a href="https://boardgamegeek.com/user/{{user}}">{{user}}</a></h2>
 <script src="{% static "viz.js" %}"></script>
 <script src="{% static "svg-pan-zoom.min.js" %}"></script>
 <a href="/user/{{user}}">Go back to questions</a><br />
 <a href="/">Back to user selection</a><br />
+(Drag and click to zoom in/out)
 <script>
 $(function() {
   document.body.innerHTML += Viz("digraph { \
