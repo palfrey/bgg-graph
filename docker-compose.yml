@@ -16,6 +16,8 @@ celery:
     links:
     - db
     - rabbitmq:rabbit
+    environment:
+      - DATABASE_URL=postgres://postgres:mysecretpassword@db/postgres
     command: celery -A graph worker -l INFO --pidfile /var/run/celery-worker.pid
 rabbitmq:
     image: rabbitmq:3.6.6-management-alpine
