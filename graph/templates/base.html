@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>{% block title %}BGG Graph{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
@@ -42,7 +43,7 @@
     <link rel="stylesheet" href="{% static "gh-fork-ribbon.css" %}" />
   </head>
   <body>
-    <a class="github-fork-ribbon" href="https://github.com/palfrey/bgg-graph" title="Fork me on GitHub">Fork me on GitHub</a>
+    <a class="github-fork-ribbon right-bottom fixed" href="https://github.com/palfrey/bgg-graph" title="Fork me on GitHub">Fork me on GitHub</a>
      <div class="container-fluid">
      {% block content %}{% endblock %}
      </div>
