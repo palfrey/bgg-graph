@@ -11,7 +11,7 @@ certifi==2018.11.29       # via requests
 chardet==3.0.4            # via requests
 click==6.7                # via pip-tools
 dj-database-url==0.4.2
-django==1.11.27
+django==1.11.28
 gunicorn==19.6.0
 idna==2.8                 # via requests
 kombu==4.0.2
