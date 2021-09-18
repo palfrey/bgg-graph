@@ -1,3 +1,2 @@
-target/
-*.xml
-ENV/
+*.pyc
+.vscode
