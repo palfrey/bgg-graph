@@ -12,4 +12,4 @@ jobs:
       - name: Build the stack
         run: docker-compose up --build -d
       - name: Test
-        run: curl --verbose --retry 10 --retry-connrefused http://localhost:8000/
+        run: curl --verbose --retry 10 --retry-all-errors http://localhost:8000/
