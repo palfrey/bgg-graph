@@ -1,60 +1,59 @@
-from celery import app
-from models import User, Game, TreeNode, QuestionLink
+from .celery import app
+from .models import User, Game, TreeNode, QuestionLink
 import xml.etree.ElementTree as ET
-import pprint
 import itertools
-from types import ListType
+from typing import List
 import requests
 import logging
 
 logger = logging.getLogger(__name__)
 
 def fill_tree(question_index, games):
-    games = set([x["id"] for x in games.values()])
-    for question in question_index.values():
+    games = set([x["id"] for x in list(games.values())])
+    for question in list(question_index.values()):
         if "default" in question:
-            non_default = set(itertools.chain.from_iterable([question["options"][k] for k in question["options"].keys() if k != question["default"]]))
+            non_default = set(itertools.chain.from_iterable([question["options"][k] for k in list(question["options"].keys()) if k != question["default"]]))
             question["options"][question["default"]] = list(games-non_default)
 
 def question_value(question, total):
-    values = dict([(k, len(question["options"][k])) for k in question["options"].keys()])
+    values = dict([(k, len(question["options"][k])) for k in list(question["options"].keys())])
     local_total = sum(values.values())
     if local_total < total:
-        raise Exception, (local_total, total, question)
+        raise Exception(local_total, total, question)
     return min(values.values())
 
 def best_question(question_index, games):
     total = len(games)
-    ordered = sorted(question_index.items(), key=lambda x: question_value(x[1], total), reverse=True)
+    ordered = sorted(list(question_index.items()), key=lambda x: question_value(x[1], total), reverse=True)
     if len(ordered) == 0:
         return None
     return ordered[0][0]
 
 def remove_games(question_index, removed_games, most_asked):
     new_question_index = {}
-    for k in question_index.keys():
+    for k in list(question_index.keys()):
         if k == most_asked:
             continue
         new_question_index[k] = {"options": {}}
-        for o in question_index[k]["options"].keys():
+        for o in list(question_index[k]["options"].keys()):
             items = set(question_index[k]["options"][o])-removed_games
             if len(items) > 0:
                 new_question_index[k]["options"][o] = items
-        if len([x for x in new_question_index[k]["options"].values() if len(x)>0]) < 2 or sum([len(x) for x in new_question_index[k]["options"].values()]) == 0:
+        if len([x for x in list(new_question_index[k]["options"].values()) if len(x)>0]) < 2 or sum([len(x) for x in list(new_question_index[k]["options"].values())]) == 0:
             del new_question_index[k]
     return new_question_index
 
 def build_tree(question_index, items):
-    games = set(x["id"] for x in items.values())
+    games = set(x["id"] for x in list(items.values()))
     most_asked = best_question(question_index, items)
     if most_asked == None:
-        return items.keys()
+        return list(items.keys())
     question = question_index[most_asked]
     tree = {"question": most_asked, "options": {}}
-    for k in question["options"].keys():
+    for k in list(question["options"].keys()):
         removed_games = games-set(question["options"][k])
         nq = remove_games(question_index, removed_games, most_asked)
-        tree["options"][k] = build_tree(nq, {k: v for k, v in items.iteritems() if v["id"] not in removed_games})
+        tree["options"][k] = build_tree(nq, {k: v for k, v in items.items() if v["id"] not in removed_games})
     return tree
 
 def flatten_name(name):
@@ -76,12 +75,12 @@ def flatten_name(name):
         .lower()
 
 def digraph(tree):
-    if type(tree) == ListType:
+    if type(tree) == List:
         flat_question = flatten_name(" ".join([str(x) for x in tree]))
     else:
         flat_question = flatten_name(tree["question"])
     flat_question = ("%s_%d" %(flat_question, id(tree)))[:200]
-    if type(tree) == ListType:
+    if type(tree) == List:
         node, _ = TreeNode.objects.get_or_create(name=flat_question, game_node=True)
         for x in tree:
             node.games.add(Game.objects.get(id=x))

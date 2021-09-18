@@ -1,12 +1,10 @@
-from __future__ import unicode_literals
-
 from django.db import models
 
 class User(models.Model):
     name = models.CharField(primary_key=True, max_length=200)
     xml = models.TextField()
     processing_task = models.UUIDField(null=True)
-    root_node = models.ForeignKey('TreeNode', null=True)
+    root_node = models.ForeignKey('TreeNode', null=True, on_delete=models.CASCADE)
 
 class Game(models.Model):
     id = models.IntegerField(primary_key=True)
