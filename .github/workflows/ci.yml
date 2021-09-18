@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: curl -o wait-for-it https://raw.githubusercontent.com/vishnubob/wait-for-it/81b1373f17855a4dc21156cfe1694c31d7d1792e/wait-for-it.sh && chmod +x wait-for-wait-for-it
+      - run: ./wait-for-it --host=localhost --port=8000 --strict -- curl --verbose --retry 10 http://localhost:8000/
       - name: Build the stack
         run: docker-compose up --build -d
       - name: Test
