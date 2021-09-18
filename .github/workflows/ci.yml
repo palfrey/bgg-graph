@@ -1,0 +1,15 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose up --build -d
+      - name: Test
+        run: ./wait-for-host.sh localhost:8000 200 20 && curl --verbose --retry 10 http://localhost:8000/
