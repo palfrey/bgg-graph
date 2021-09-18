@@ -138,7 +138,7 @@ def update_user(self, name):
                 if nametag.get("type") == "primary":
                     name = nametag.get("value")
                     break
-            Game.objects.get_or_create(id=game, xml=info.text, name=name)
+            Game.objects.get_or_create(id=game, defaults={"xml": info.text, "name": name})
         else:
             gameroot = ET.fromstring(games[0].xml.encode('utf-8'))[0]
         questions = []
