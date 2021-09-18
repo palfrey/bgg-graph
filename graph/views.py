@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
-import requests
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
-from models import *
-from tasks import update_user
-from celery import app
+from .models import *
+from .tasks import update_user
+from .celery import app
 import xml.etree.ElementTree as ET
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 def escape(name):
     return name.replace("\"", "\\\\\\\"")
@@ -66,7 +65,7 @@ def user(request, name):
     for answer in questions.all():
         answers[answer.label] = existing.copy()
         answers[answer.label][question.description] = answer.label
-        answers[answer.label] = "&".join(["%s=%s"%(urllib.quote(key),value) for (key,value) in answers[answer.label].items()])
+        answers[answer.label] = "&".join(["%s=%s"%(urllib.parse.quote(key),value) for (key,value) in list(answers[answer.label].items())])
     return render(request, "question.html", {
         "existing": existing,
         "question": question.description,
